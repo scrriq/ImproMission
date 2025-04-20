@@ -29,6 +29,10 @@ class MainActivity : AppCompatActivity() {
         restartNotificationListener(this)
         val filter = IntentFilter("NEW_SMS_RECEIVED")
         registerReceiver(smsReceiver, filter)
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.placeHolder, NotificationListFragment.newInstance())
+            .commit()
     }
 
     private val smsReceiver = object: BroadcastReceiver(){

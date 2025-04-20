@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compilerKsp)
 }
 
 android {
@@ -39,6 +40,18 @@ android {
 }
 
 dependencies {
+    // room
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation (libs.androidx.room.ktx)
+
+    implementation(libs.androidx.lifecycle.viewmodel.ktx) // import viewModel
+    implementation(libs.androidx.lifecycle.livedata.ktx) // импорт для flow, чтобы был live data, который отлеживает изменения
+
+
+    // корутины
+    implementation( libs.org.jetbrains.kotlinx.kotlinx.coroutines.core)
+    implementation( libs.kotlinx.coroutines.android)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
