@@ -1,10 +1,12 @@
-package com.example.impromission
+package com.example.impromission.notification.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.impromission.R
 import com.example.impromission.databinding.NotificationItemBinding
+import com.example.impromission.notification.db.NotificationEntity
 
 
 // vh - view holder . В данном случае реализован как inner класс в RecyclerView.Adapter
@@ -21,7 +23,7 @@ class NotificationAdapter : RecyclerView.Adapter<NotificationAdapter.notificatio
         return notificationHolder(view)
     }
 
-    override fun onBindViewHolder(holder: NotificationAdapter.notificationHolder, position: Int) {
+    override fun onBindViewHolder(holder: notificationHolder, position: Int) {
         holder.bind(notificationList[position])
     }
 

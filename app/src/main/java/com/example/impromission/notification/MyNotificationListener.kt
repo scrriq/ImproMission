@@ -1,22 +1,35 @@
-package com.example.impromission
+package com.example.impromission.notification
 
 import android.app.Notification
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import com.example.impromission.AppDatabase
+import com.example.impromission.notification.db.NotificationEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MyNotificationListener : NotificationListenerService() {
 
+    override fun onCreate() {
+        super.onCreate()
+        Log.d("NotificationService1", "Сервис создан")
+    }
+    // Проверка работы сервиса
+    override fun onListenerConnected() {
+        super.onListenerConnected()
+        Log.d("NotificationService1", "Сервис запущен и работает")
+    }
+
     private val dao by lazy {
-        NotificationDatabase.getDb(applicationContext).notificationDao()
+        AppDatabase.getDb(applicationContext).notificationDao()
     }
 
 
     // Отслеживание push уведомлений
-    override fun onNotificationPosted(sbn: StatusBarNotification) {
+        override fun onNotificationPosted(sbn: StatusBarNotification) {
+        Log.d("hello", "Функция запущена")
         val packageName = sbn.packageName
         val extras = sbn.notification.extras
 
@@ -29,11 +42,10 @@ class MyNotificationListener : NotificationListenerService() {
             subText = extras.getCharSequence(Notification.EXTRA_SUB_TEXT)?.toString() ?: "Нет Sub Text"
         )
 
-        // Запускаем вставку в фоновом потоке,
+//         Запускаем вставку в фоновом потоке,
         CoroutineScope(Dispatchers.IO).launch {
             dao.insert(entity)
         }
-
 
 
 
@@ -61,9 +73,9 @@ class MyNotificationListener : NotificationListenerService() {
         Log.d("NotificationRemoved", "Removed: ${sbn.packageName}")
     }
 
-    // Проверка работы сервиса
-    override fun onListenerConnected() {
-        super.onListenerConnected()
-        Log.d("NotificationListenerInfo", "Сервис запущен и работает")
+    override fun onDestroy() {
+        Log.d("NotificationService", "Сервис уничтожен")
+        super.onDestroy()
     }
+
 }

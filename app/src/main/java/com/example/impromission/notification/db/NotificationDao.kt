@@ -1,4 +1,4 @@
-package com.example.impromission
+package com.example.impromission.notification.db
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert

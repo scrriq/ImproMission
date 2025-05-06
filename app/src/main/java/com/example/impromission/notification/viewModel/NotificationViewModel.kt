@@ -1,11 +1,12 @@
-package com.example.impromission
+package com.example.impromission.notification.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.impromission.notification.db.NotificationRepository
+import com.example.impromission.notification.db.NotificationEntity
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class NotificationViewModel(private val repo: NotificationRepository) : ViewModel() {

@@ -1,9 +1,7 @@
-package com.example.impromission
+package com.example.impromission.notification.db
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Date
 
 @Entity(tableName = "notifications")
 data class NotificationEntity(

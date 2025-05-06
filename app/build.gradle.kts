@@ -48,6 +48,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx) // import viewModel
     implementation(libs.androidx.lifecycle.livedata.ktx) // импорт для flow, чтобы был live data, который отлеживает изменения
 
+    implementation(libs.androidx.fragment.ktx)
+
 
     // корутины
     implementation( libs.org.jetbrains.kotlinx.kotlinx.coroutines.core)

@@ -11,28 +11,48 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.impromission.databinding.ActivityMainBinding
+import com.example.impromission.notification.MyNotificationListener
+import com.example.impromission.notification.NotificationListFragment
+import com.example.impromission.tasks.TasksFragment
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var bindingClass: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bindingClass = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(bindingClass.root)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         redirectionToSettings()
         restartNotificationListener(this)
-        val filter = IntentFilter("NEW_SMS_RECEIVED")
-        registerReceiver(smsReceiver, filter)
+//        val filter = IntentFilter("NEW_SMS_RECEIVED")
+//        registerReceiver(smsReceiver, filter)
+
+
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.placeHolder, NotificationListFragment.newInstance())
+            .replace(R.id.placeHolder, TasksFragment.newInstance())
             .commit()
+        binding.bNav.setOnItemSelectedListener {
+            when(it.itemId) {
+                R.id.item1 -> {
+                    supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.placeHolder, TasksFragment.newInstance())
+                        .commit()
+                }
+
+                R.id.item3 -> {
+                    supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.placeHolder, NotificationListFragment.newInstance())
+                        .commit()
+                }
+            }
+            true
+        }
     }
 
     private val smsReceiver = object: BroadcastReceiver(){

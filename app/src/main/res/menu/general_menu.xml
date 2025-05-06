@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/item1"
+        android:icon="@drawable/ic_item_tasks"
+        android:title="Tasks"
+        android:orderInCategory="1"/>
+
+    <item android:id="@+id/item2"
+        android:icon="@drawable/ic_item_calendar"
+        android:title="Calendar"
+        android:orderInCategory="2"/>
+
+    <item android:id="@+id/item3"
+        android:icon="@drawable/ic_notification_item"
+        android:title="Notifications"
+        android:orderInCategory="3"/>
+
+    <item android:id="@+id/item4"
+        android:icon="@drawable/ic_account_item"
+        android:title="Account"
+        android:orderInCategory="4"/>
+
+</menu>

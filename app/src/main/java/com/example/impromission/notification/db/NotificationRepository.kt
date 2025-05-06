@@ -1,7 +1,6 @@
-package com.example.impromission
+package com.example.impromission.notification.db
 
 import androidx.lifecycle.LiveData
-import kotlinx.coroutines.flow.Flow
 
 class NotificationRepository(private val dao: NotificationDao) {
 
