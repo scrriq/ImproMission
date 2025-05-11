@@ -13,8 +13,11 @@ interface TaskDao{
     @Query("SELECT * FROM tasks ORDER BY id DESC")
     fun getAll() : LiveData<List<TaskEntity>>
 
+    @Query("SELECT * FROM tasks WHERE id = :id")
+    fun getById(id: Long): LiveData<TaskEntity>
+
     @Insert
-    suspend fun insert(task: TaskEntity) : Long
+    suspend fun insert(task: TaskEntity): Long
 
     @Update
     suspend fun update(task: TaskEntity)

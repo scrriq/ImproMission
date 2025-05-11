@@ -1,19 +1,27 @@
 package com.example.impromission.notification
 
+import android.app.Application
 import android.app.Notification
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.example.impromission.AppDatabase
 import com.example.impromission.notification.db.NotificationEntity
+import com.example.impromission.tasks.db.TaskEntity
+import com.example.impromission.tasks.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MyNotificationListener : NotificationListenerService() {
-
+    private lateinit var tasksViewModel: TasksViewModel
     override fun onCreate() {
         super.onCreate()
+        val application = this.application as Application
+        tasksViewModel = ViewModelProvider.AndroidViewModelFactory(application)
+            .create(TasksViewModel::class.java)
         Log.d("NotificationService1", "Сервис создан")
     }
     // Проверка работы сервиса
@@ -42,10 +50,21 @@ class MyNotificationListener : NotificationListenerService() {
             subText = extras.getCharSequence(Notification.EXTRA_SUB_TEXT)?.toString() ?: "Нет Sub Text"
         )
 
-//         Запускаем вставку в фоновом потоке,
+        // отслеживание уведомлений
         CoroutineScope(Dispatchers.IO).launch {
+            val nothTitle = entity.text
+            val wordsArray = nothTitle.split("\\s+".toRegex()).toTypedArray()
+            // Сценарий добавление задачи
+            if(entity.packageName == "org.telegram.messenger" && wordsArray[0] == "#123"){
+                val title = "Сообщение от ${entity.title}"
+                val description = "Код операции ${wordsArray[1]}, Заказ: ${wordsArray[2]}"
+                val newTask = TaskEntity(title = title, description = description)
+                tasksViewModel.addTask(newTask)
+            }
             dao.insert(entity)
         }
+
+
 
 
 

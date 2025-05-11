@@ -12,14 +12,15 @@ import javax.security.auth.callback.Callback
 
 class TaskAdapter (
     private var tasks: List<TaskEntity>,
-    private val onEdit: (TaskEntity) -> Unit
+    private val onTaskClick: (Long) -> Unit
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>(){
 
     inner class TaskViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
-        val text: TextView = itemView.findViewById(R.id.currentTask) // переделать
+        val title: TextView = itemView.findViewById(R.id.currentTask)
+        val description: TextView = itemView.findViewById(R.id.currentTaskDescription)
         init{
             itemView.setOnClickListener{
-                onEdit(tasks[adapterPosition])
+                onTaskClick(tasks[adapterPosition].id)
             }
         }
     }
@@ -28,7 +29,9 @@ class TaskAdapter (
         TaskViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.tasks_item, parent, false))
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        holder.text.text = tasks[position].text
+        val task = tasks[position]
+        holder.title.text = task.title.trimEllipsis(15)
+        holder.description.text = task.description.trimEllipsis(35)
     }
 
     override fun getItemCount() = tasks.size
@@ -36,6 +39,9 @@ class TaskAdapter (
     fun submitList(newList : List<TaskEntity>){
         tasks = newList
         notifyDataSetChanged()
+    }
+    private fun String.trimEllipsis(maxLength: Int): String {
+        return if(length > maxLength) substring(0, maxLength).trimEnd() + "..." else this
     }
 
     fun attachSwipeToDelete(recyclerView: RecyclerView, onDelete : (TaskEntity) -> Unit){

@@ -14,6 +14,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.impromission.databinding.ActivityMainBinding
 import com.example.impromission.notification.MyNotificationListener
 import com.example.impromission.notification.NotificationListFragment
@@ -21,6 +25,7 @@ import com.example.impromission.tasks.TasksFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -30,29 +35,29 @@ class MainActivity : AppCompatActivity() {
 //        val filter = IntentFilter("NEW_SMS_RECEIVED")
 //        registerReceiver(smsReceiver, filter)
 
+        val navHost =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHost.navController
 
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.placeHolder, TasksFragment.newInstance())
-            .commit()
+        // Привязываем BottomNavigationView к NavController
+        binding.bNav.setupWithNavController(navController)
+
         binding.bNav.setOnItemSelectedListener {
             when(it.itemId) {
                 R.id.item1 -> {
-                    supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.placeHolder, TasksFragment.newInstance())
-                        .commit()
+                    navController.navigate(R.id.tasksFragment)
                 }
 
                 R.id.item3 -> {
-                    supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.placeHolder, NotificationListFragment.newInstance())
-                        .commit()
+                    navController.navigate(R.id.notificationsFragment)
                 }
             }
             true
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
     private val smsReceiver = object: BroadcastReceiver(){

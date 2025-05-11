@@ -5,15 +5,23 @@ import androidx.lifecycle.LiveData
 class TasksRepository(private val dao: TaskDao) {
     val allTasks : LiveData<List<TaskEntity>> = dao.getAll()
 
-    suspend fun add(text: String){
-        dao.insert(TaskEntity(text = text))
-    }
+    fun getTaskById(id: Long): LiveData<TaskEntity> = dao.getById(id)
 
-    suspend fun update(task : TaskEntity){
-        dao.update(task)
-    }
+    suspend fun add(task: TaskEntity)= dao.insert(task)
 
-    suspend fun delete(task: TaskEntity){
-        dao.delete(task)
-    }
+    suspend fun update(task: TaskEntity) = dao.update(task)
+
+    suspend fun delete(task: TaskEntity) = dao.delete(task)
+
+//    suspend fun add(text: String){
+//        dao.insert(TaskEntity(text = text))
+//    }
+//
+//    suspend fun update(task : TaskEntity){
+//        dao.update(task)
+//    }
+//
+//    suspend fun delete(task: TaskEntity){
+//        dao.delete(task)
+//    }
 }

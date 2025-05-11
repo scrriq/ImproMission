@@ -7,7 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.impromission.R
 import com.example.impromission.databinding.FragmentTasksBinding
@@ -31,7 +34,20 @@ class TasksFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = TaskAdapter(emptyList(), ::showEditDialog)
+
+        adapter = TaskAdapter(emptyList()) { taskId ->
+            findNavController().navigate(
+                R.id.action_tasksFragment_to_taskDetailFragment,
+                bundleOf("taskId" to taskId)
+            )
+        }
+
+        binding.addTaskButton.setOnClickListener {
+            Navigation.findNavController(it).navigate(
+                R.id.action_tasksFragment_to_taskDetailFragment
+            )
+        }
+
         binding.taskRecyclerView.apply{
             layoutManager = LinearLayoutManager(requireContext())
             adapter = this@TasksFragment.adapter
@@ -44,40 +60,6 @@ class TasksFragment : Fragment() {
         vm.allTasks.observe(viewLifecycleOwner){
             list -> adapter.submitList(list)
         }
-
-        binding.addTaskButton.setOnClickListener{
-            showAddDialog()
-        }
-    }
-    private fun showAddDialog(){
-        val edit = EditText(requireContext())
-        AlertDialog.Builder(requireContext())
-            .setTitle("Новая задача")
-            .setView(edit)
-            .setPositiveButton("Добавить"){
-                _, _, ->
-                val text = edit.text.toString().trim()
-                if(text.isNotEmpty()) vm.addTask(text)
-            }
-            .setNegativeButton("Отмена", null)
-            .show()
-    }
-
-    private fun showEditDialog(task: TaskEntity){
-        val edit = EditText(requireContext()).apply { setText(task.text) }
-        AlertDialog.Builder(requireContext())
-            .setTitle("Редактировать задачу")
-            .setView(edit)
-            .setPositiveButton("Сохранить"){
-                _, _, ->
-                val newText = edit.text.toString().trim()
-                if(newText.isNotEmpty() && newText != task.text){
-                    task.text = newText
-                    vm.updateTask(task)
-                }
-            }
-            .setNegativeButton("Отмена", null)
-            .show()
     }
 
 
