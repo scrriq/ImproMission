@@ -22,7 +22,12 @@
     <fragment
         android:id="@+id/taskDetailFragment"
         android:name="com.example.impromission.tasks.TaskDetailFragment"
-        android:label="Task Details">
+        android:label="Task Details"/>
+
+    <fragment
+        android:id="@+id/mainPageAccount"
+        android:name="com.example.impromission.account.MainPageAccount"
+        android:label="Account Page">
 
         <argument
             android:name="taskId"

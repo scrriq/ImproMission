@@ -51,6 +51,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.item3 -> {
                     navController.navigate(R.id.notificationsFragment)
                 }
+                R.id.item4->{
+                    navController.navigate(R.id.mainPageAccount)
+                }
             }
             true
         }
